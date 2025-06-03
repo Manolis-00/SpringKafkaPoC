@@ -1,0 +1,34 @@
+# Main app config
+spring:
+  application:
+    name: spring-kafka-demo
+
+    # DB config
+    datasource:
+      url: jdbc:h2:mem:testdb
+      driver-class-name: org.h2.Driver
+      username: sa
+      password: password
+
+    # JPA/Hibernate Config
+    jpa:
+      hibernate:
+        ddl-auto: create-drop #creates tables on startup, drops on shutdown
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.H2Dialect
+          format_sql: true
+      show-sql: true
+
+    # H2 Console Config (for dev)
+    h2:
+      console:
+        enanbled: true
+        path: /h2-console
+
+    # Logging Config
+    logging:
+      level:
+        org.example: DEBUG
+        org.springframework.kafka: INFO
+        org.apache.kafka: WARN
