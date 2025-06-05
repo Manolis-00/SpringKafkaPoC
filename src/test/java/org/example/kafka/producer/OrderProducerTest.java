@@ -7,7 +7,6 @@ import org.example.dto.OrderEventDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,7 +15,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -95,7 +93,8 @@ public class OrderProducerTest {
 
     /**
      * Helpers to make the test more readable
-     * @return
+     *
+     * @return - Return the newly created {@link OrderEventDTO}
      */
     private OrderEventDTO createTestOrderEvent() {
         return OrderEventDTO.builder()

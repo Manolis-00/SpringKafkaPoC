@@ -25,7 +25,7 @@ public class OrderProcessingService {
     /**
      * Processes order events based on event type.
      * 
-     * @param eventDTO
+     * @param eventDTO - The {@link OrderEventDTO}
      */
     public void processOrderEvent(OrderEventDTO eventDTO) {
        log.info("Processing order event: {}", eventDTO);
@@ -43,7 +43,7 @@ public class OrderProcessingService {
     }
     
     private void processNewOrder(OrderEventDTO eventDTO) {
-        // Order procesing logic
+        // Order processing logic
         Order order = orderRepository.findById(eventDTO.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Order not found: " + eventDTO.getOrderId()));
         
@@ -68,7 +68,7 @@ public class OrderProcessingService {
 
     /**
      * Basic update
-     * @param eventDTO
+     * @param eventDTO - The {@link OrderEventDTO}
      */
     private void processOrderUpdate(OrderEventDTO eventDTO) {
         log.info("Processing order update for order: {}", eventDTO.getOrderId());

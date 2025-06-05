@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Controller layer tests.
- * @WebMvcTest focuses only on the web layer, making tests fast.
+ * {@code @WebMvcTest} focuses only on the web layer, making tests fast.
  */
 @WebMvcTest(OrderController.class)
 @ActiveProfiles("test")
@@ -104,7 +104,7 @@ public class OrderControllerTest {
     @Test
     void testGetOrdersByStatus() throws Exception {
         // Given
-        List<Order> pendingOrders = Arrays.asList(createTestOrder(1L, "Customer1"));
+        List<Order> pendingOrders = List.of(createTestOrder(1L, "Customer1"));
 
         when(orderService.getOrdersByStatus(OrderStatus.PENDING)).thenReturn(pendingOrders);
 

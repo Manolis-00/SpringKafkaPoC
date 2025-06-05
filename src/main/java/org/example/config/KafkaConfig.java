@@ -18,9 +18,8 @@ public class KafkaConfig {
 
     /**
      * Creates the order events topic with 3 partitions and replication factor of 1.
-     * In production, you'd want a higher replication factor for fault tolerance.
      *
-     * @return
+     * @return Returns a {@link NewTopic}
      */
     @Bean
     public NewTopic orderEventsTopic() {

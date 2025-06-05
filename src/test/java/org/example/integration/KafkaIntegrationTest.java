@@ -1,15 +1,12 @@
 package org.example.integration;
 
-import kafka.KafkaTest;
-import kafka.tools.ConsoleConsumer;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.example.dto.OrderEventDTO;
 import org.example.dto.OrderRequestDTO;
 import org.example.entity.Order;
-import org.example.repository.OrderRepository;
 import org.example.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -50,13 +48,17 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "port=9092"
         }
 )
+@TestPropertySource(properties = {
+        "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
+        "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
+        "spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer",
+        "spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer",
+        "spring.kafka.consumer.properties.spring.json.trusted.packages=*"
+})
 public class KafkaIntegrationTest {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private OrderRepository orderRepository;
 
     @Autowired
     private EmbeddedKafkaBroker embeddedKafkaBroker;
@@ -73,7 +75,7 @@ public class KafkaIntegrationTest {
         consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        consumerProps.put(JsonDeserializer.TYPE_MAPPINGS, "orderEvent:org.example.dto.OrderEventDTO");
+        consumerProps.put(JsonDeserializer.TYPE_MAPPINGS, "orderEventDTO:org.example.dto.OrderEventDTO");
 
         DefaultKafkaConsumerFactory<String, OrderEventDTO> consumerFactory = new DefaultKafkaConsumerFactory<>(consumerProps);
         ContainerProperties containerProperties = new ContainerProperties(orderEventsTopic);

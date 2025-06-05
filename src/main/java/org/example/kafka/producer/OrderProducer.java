@@ -21,7 +21,7 @@ public class OrderProducer {
 
     private final KafkaTemplate<String, OrderEventDTO> kafkaTemplate;
 
-    @Value("${app.kafka.topic.order-events")
+    @Value("${app.kafka.topic.order-events}")
     private String orderEventsTopic;
 
     public void sendOrderEvent(OrderEventDTO orderEventDTO) {

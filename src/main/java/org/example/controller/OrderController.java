@@ -22,8 +22,8 @@ public class OrderController {
     /**
      * Creates a new order.
      *
-     * @param requestDTO
-     * @return
+     * @param requestDTO - Requires a {@link OrderRequestDTO} object
+     * @return - The body entity of the response
      */
     @PostMapping
     public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderRequestDTO requestDTO) {
@@ -33,7 +33,8 @@ public class OrderController {
 
     /**
      * Retrieves all orders
-     * @return
+     *
+     * @return - The response entity
      */
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
@@ -43,8 +44,9 @@ public class OrderController {
 
     /**
      * Retrieves orders by status
-     * @param status
-     * @return
+     *
+     * @param status - The status of the order as {@link String}
+     * @return - A list of the orders whose orderStatus matches the input
      */
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Order>> getOrdersByStatus(@PathVariable String status) {
@@ -55,8 +57,9 @@ public class OrderController {
 
     /**
      * Retrieves orders by customer name.
-     * @param customerName
-     * @return
+     *
+     * @param customerName -The customerName
+     * @return - A list of the orders made to the provided customer
      */
     @GetMapping("/customer/{customerName}")
     public ResponseEntity<List<Order>> getOrdersByCustomer(@PathVariable String customerName) {
@@ -67,9 +70,9 @@ public class OrderController {
     /**
      * Updates order status
      *
-     * @param orderId
-     * @param status
-     * @return
+     * @param orderId - the id of the {@link Order}
+     * @param status  - the status of the {@link Order}
+     * @return - Provides a patch, which updates the order that matches the provided orderId with the new status provided.
      */
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<Order> updateOrderStatus(
