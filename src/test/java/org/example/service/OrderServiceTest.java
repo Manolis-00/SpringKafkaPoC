@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.dto.OrderEventDTO;
 import org.example.dto.OrderRequestDTO;
 import org.example.entity.Order;
 import org.example.enums.OrderStatus;
@@ -9,7 +8,6 @@ import org.example.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -77,7 +76,7 @@ public class OrderServiceTest {
         verify(orderRepository).save(any(Order.class));
 
         // Verify event was published with correct data
-        ArgumentCaptor<OrderEventDTO> eventDTOArgumentCaptor = ArgumentCaptor.forClass(OrderEventDTO.class);
+        //ArgumentCaptor<OrderEventDTO> eventDTOArgumentCaptor = ArgumentCaptor.forClass(OrderEventDTO.class);
         //TODO - Verify order producer for Kafka
     }
 
@@ -108,7 +107,26 @@ public class OrderServiceTest {
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(existingOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(existingOrder);
 
+        // When
+        Order result = orderService.updateOrderStatus(orderId, OrderStatus.COMPLETED);
 
+        // Then
+        assertThat(result.getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
+
+        // TODO - Kafka tests
+    }
+
+    @Test
+    void testUpdateOrderStatusNotFound() {
+        // Given
+        Long orderId = 999L;
+        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+
+        // When / Then
+        assertThatThrownBy(() ->
+                orderService.updateOrderStatus(orderId, OrderStatus.COMPLETED))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Order not found: 999");
     }
 
     private Order createTestOrder(Long id, String customerName) {

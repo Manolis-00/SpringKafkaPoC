@@ -54,4 +54,17 @@ public class Order {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public Order copy() {
+        Order copiedOrder = new Order();
+        copiedOrder.setId(this.getId());
+        copiedOrder.setCustomerName(this.getCustomerName());
+        copiedOrder.setProductName(this.getProductName());
+        copiedOrder.setQuantity(this.getQuantity());
+        copiedOrder.setPrice(this.getPrice());
+        copiedOrder.setOrderStatus(this.getOrderStatus());
+        copiedOrder.setCreatedAt(this.getCreatedAt());
+        copiedOrder.setProcessedAt(this.getProcessedAt());
+        return copiedOrder;
+    }
 }
